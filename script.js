@@ -1,4 +1,44 @@
+// Theme switching functionality
+function initTheme() {
+    // Check if user has a preferred color scheme
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+    
+    setTheme(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeIcon(theme);
+}
+
+function updateThemeIcon(theme) {
+    const themeIcon = document.querySelector('.theme-switch i');
+    if (!themeIcon) return;
+    
+    if (theme === 'dark') {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize theme
+    initTheme();
+    
+    // Add theme switch event listener
+    const themeSwitch = document.querySelector('.theme-switch');
+    themeSwitch.addEventListener('click', toggleTheme);
     // Get all sections and elements to animate
     const sections = document.querySelectorAll('.section');
     const skillItems = document.querySelectorAll('.skill-item');
